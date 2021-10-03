@@ -1,14 +1,29 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Products = () => {
   return (
     <section>
       <h1>The Products Page</h1>
       <ul>
-        <li>Product 1</li>
-        <li>Product 2</li>
-        <li>Product 3</li>
-        <li>Product 4</li>
+        <li>
+          <Link to="/products/p1">Product 1</Link>
+        </li>
+        <li>
+          <Link to="/products/p2">Product 2</Link>
+        </li>
+        <li>
+          <Link to="/products/p3">Product 3</Link>
+        </li>
+        <li>
+          <Link to="/products/p4">Product 4</Link>
+        </li>
+        <li>
+          <Link to="/products/p5">Product 5</Link>
+        </li>
+        <li>
+          <Link to="/products/p6">Product 6</Link>
+        </li>
       </ul>
     </section>
   );
