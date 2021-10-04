@@ -1,9 +1,11 @@
 import { useContext } from "react";
+import { useHistory } from "react-router";
 import { useRef } from "react/cjs/react.development";
 import AuthContext from "../../store/auth-context";
 import classes from "./ProfileForm.module.css";
 
 const ProfileForm = () => {
+  const history = useHistory();
   const newPasswordInputRef = useRef();
 
   const authCtx = useContext(AuthContext);
@@ -25,7 +27,9 @@ const ProfileForm = () => {
           "Content-Type": "application/json",
         },
       }
-    ).then((res) => {});
+    ).then((res) => {
+      history.replace("/");
+    });
   };
 
   return (
@@ -35,7 +39,7 @@ const ProfileForm = () => {
         <input
           type="password"
           id="new-password"
-          minLength="7"
+          minLength="6"
           ref={newPasswordInputRef}
         />
       </div>
