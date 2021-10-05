@@ -3,7 +3,7 @@ import React from "react";
 import NewMeetUpForm from "../../components/meetups/NewMeetupForm";
 
 const NewMeetupPage = () => {
-  const router = useRouter;
+  const router = useRouter();
   const addMeetupHandler = async (enteredMeetupData) => {
     const response = await fetch("/api/new-meetup", {
       method: "POST",

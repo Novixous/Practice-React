@@ -1,4 +1,5 @@
 import MeetupDetail from "../../components/meetups/MeetupDetail";
+import { MongoClient, ObjectId } from "mongodb";
 
 const MeetupDetails = (props) => {
   return (
@@ -12,34 +13,50 @@ const MeetupDetails = (props) => {
 };
 
 export const getStaticPaths = async () => {
+  const client = await MongoClient.connect(
+    "mongodb+srv://sa:IloveTora480598@firstcluster.fxhym.mongodb.net/meetups?retryWrites=true&w=majority"
+  );
+  const db = client.db();
+
+  const meetupsCollection = db.collection("meetups");
+
+  const meetups = await meetupsCollection.find({}, { _id: 1 }).toArray();
+
+  client.close();
+
   return {
     fallback: false,
-    paths: [
-      {
-        params: {
-          meetupId: "m1",
-        },
+    paths: meetups.map((meetup) => ({
+      params: {
+        meetupId: meetup._id.toString(),
       },
-      {
-        params: {
-          meetupId: "m2",
-        },
-      },
-    ],
+    })),
   };
 };
 
 export const getStaticProps = async (context) => {
   const meetupId = context.params.meetupId;
+
+  const client = await MongoClient.connect(
+    "mongodb+srv://sa:IloveTora480598@firstcluster.fxhym.mongodb.net/meetups?retryWrites=true&w=majority"
+  );
+  const db = client.db();
+
+  const meetupsCollection = db.collection("meetups");
+
+  const selectedMeetup = await meetupsCollection.findOne({
+    _id: ObjectId(meetupId),
+  });
+
+  client.close();
   return {
     props: {
       meetupData: {
-        id: meetupId,
-        image:
-          "https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg",
-        title: "First Meetup",
-        address: "Some street 5, Some City",
-        description: "This is the first meetup",
+        id: selectedMeetup._id.toString(),
+        title: selectedMeetup.title,
+        image: selectedMeetup.image,
+        address: selectedMeetup.address,
+        description: selectedMeetup.description,
       },
     },
   };
